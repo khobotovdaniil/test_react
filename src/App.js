@@ -1,5 +1,7 @@
-import { Component } from 'react';
+import React, { Component } from 'react';
 import styled from 'styled-components';
+import BootstrapTest from './BootstrapTest';
+import {Form} from 'react-bootstrap';
 
 import './App.css';
 
@@ -84,9 +86,54 @@ const Wrapper = styled.div`
 
 `;
 
+const DynamicGreeting = (props) => {
+	return (
+		<div className={'mb-3 p-3 border border-' + props.color}>
+			{
+				React.Children.map(props.children, child => {
+					return React.cloneElement(child, {className: 'shadow p-3 m-3 border rounded'})
+				})
+			}
+		</div>
+	)
+}
+
 function App() {
 	return (
 		<Wrapper>
+			<BootstrapTest
+				left = {
+					<DynamicGreeting color={'primary'}>
+						<h2>This weel was hard</h2>
+						<h2>Hello!</h2>
+					</DynamicGreeting>
+				}
+				right = {
+					<DynamicGreeting color={'shadow'}>
+						<Form>
+							<Form.Group className="mb-3" controlId="formBasicEmail">
+								<Form.Label>Email address</Form.Label>
+								<Form.Control type="email" placeholder="Enter email" />
+								<Form.Text className="text-muted">
+								We'll never share your email with anyone else.
+								</Form.Text>
+							</Form.Group>
+
+							<Form.Group className="mb-3" controlId="formBasicPassword">
+								<Form.Label>Password</Form.Label>
+								<Form.Control type="password" placeholder="Password" />
+							</Form.Group>
+							<Form.Group className="mb-3" controlId="formBasicCheckbox">
+								<Form.Check type="checkbox" label="Check me out" />
+							</Form.Group>
+							<Button variant="primary" type="submit">
+								Submit
+							</Button>
+						</Form>
+					</DynamicGreeting>
+				}
+			/>
+
 			<WhoAmI name='John' surname="Smith" link="fb.com"/>
 			<WhoAmI name='Alex' surname="Shepard" link="vk.com"/>
 		</Wrapper>
