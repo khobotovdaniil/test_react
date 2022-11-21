@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import BootstrapTest from './BootstrapTest';
-import {Form} from 'react-bootstrap';
+import {Form, Container} from 'react-bootstrap';
 
 import './App.css';
 
@@ -139,51 +139,89 @@ class Counter extends Component {
 	}
 }
 
+class NewForm extends Component {
+	// myRef = React.createRef();
+
+
+	// componentDidMount() {
+	// 	this.myRef.current.focus();
+	// }
+
+	setInputRef = (elem) => {
+		this.myRef = elem;
+	}
+
+	focusFirstTI = () => {
+		if (this.myRef) {
+			this.myRef.focus();
+		}
+	}
+
+    render() {
+        return (
+            <Container>
+                <form className="w-50 border mt-5 p-3 m-auto">
+                    <div className="mb-3">
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
+                        <input ref={this.setInputRef} type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com"/>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+                        <textarea onClick={this.focusFirstTI} className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+                </form>
+            </Container>
+        )
+    }
+}
+
 function App() {
 	return (
-		<Wrapper>
+		<>
+			<NewForm/>
+			<Wrapper>
+				<Counter render={counter => (
+					<Message counter={counter}/>
+				)}/>
 
-			<Counter render={counter => (
-				<Message counter={counter}/>
-			)}/>
+				<HelloGreeting/>
+				<BootstrapTest
+					left = {
+						<DynamicGreeting color={'primary'}>
+							<h2>This weel was hard</h2>
+							<h2>Hello!</h2>
+						</DynamicGreeting>
+					}
+					right = {
+						<DynamicGreeting color={'shadow'}>
+							<Form>
+								<Form.Group className="mb-3" controlId="formBasicEmail">
+									<Form.Label>Email address</Form.Label>
+									<Form.Control type="email" placeholder="Enter email" />
+									<Form.Text className="text-muted">
+									We'll never share your email with anyone else.
+									</Form.Text>
+								</Form.Group>
 
-			<HelloGreeting/>
-			<BootstrapTest
-				left = {
-					<DynamicGreeting color={'primary'}>
-						<h2>This weel was hard</h2>
-						<h2>Hello!</h2>
-					</DynamicGreeting>
-				}
-				right = {
-					<DynamicGreeting color={'shadow'}>
-						<Form>
-							<Form.Group className="mb-3" controlId="formBasicEmail">
-								<Form.Label>Email address</Form.Label>
-								<Form.Control type="email" placeholder="Enter email" />
-								<Form.Text className="text-muted">
-								We'll never share your email with anyone else.
-								</Form.Text>
-							</Form.Group>
+								<Form.Group className="mb-3" controlId="formBasicPassword">
+									<Form.Label>Password</Form.Label>
+									<Form.Control type="password" placeholder="Password" />
+								</Form.Group>
+								<Form.Group className="mb-3" controlId="formBasicCheckbox">
+									<Form.Check type="checkbox" label="Check me out" />
+								</Form.Group>
+								<Button variant="primary" type="submit">
+									Submit
+								</Button>
+							</Form>
+						</DynamicGreeting>
+					}
+				/>
 
-							<Form.Group className="mb-3" controlId="formBasicPassword">
-								<Form.Label>Password</Form.Label>
-								<Form.Control type="password" placeholder="Password" />
-							</Form.Group>
-							<Form.Group className="mb-3" controlId="formBasicCheckbox">
-								<Form.Check type="checkbox" label="Check me out" />
-							</Form.Group>
-							<Button variant="primary" type="submit">
-								Submit
-							</Button>
-						</Form>
-					</DynamicGreeting>
-				}
-			/>
-
-			<WhoAmI name='John' surname="Smith" link="fb.com"/>
-			<WhoAmI name='Alex' surname="Shepard" link="vk.com"/>
-		</Wrapper>
+				<WhoAmI name='John' surname="Smith" link="fb.com"/>
+				<WhoAmI name='Alex' surname="Shepard" link="vk.com"/>
+			</Wrapper>
+		</>
 	);
 }
 
