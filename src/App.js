@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import styled from 'styled-components';
 import BootstrapTest from './BootstrapTest';
 import {Form, Container} from 'react-bootstrap';
@@ -139,7 +140,7 @@ class Counter extends Component {
 	}
 }
 
-class NewForm extends Component {
+class RefForm extends Component {
 	// myRef = React.createRef();
 
 
@@ -175,10 +176,69 @@ class NewForm extends Component {
     }
 }
 
+class NewForm extends Component {
+	state = {
+		advOpen: false
+	}
+
+	handleClick = () => {
+		this.setState(({advOpen}) => ({
+			advOpen: !advOpen
+		}))
+	}
+
+    render() {
+        return (
+            <Container>
+                <form onClick={this.handleClick} className="w-50 border mt-5 p-3 m-auto" 
+                style={{'overflow': 'hidden', 
+                        'position': 'relative'}}>
+                    <div className="mb-3">
+                        <label htmlFor="exampleFormControlInput1" className="form-label">Email address</label>
+                        <input  type="email" className="form-control" id="exampleFormControlInput1" placeholder="name@example.com"/>
+                    </div>
+                    <div className="mb-3">
+                        <label htmlFor="exampleFormControlTextarea1" className="form-label">Example textarea</label>
+                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                    </div>
+					{
+						this.state.advOpen ? 
+							<Portal>
+								<Msg/>
+							</Portal> : null
+					}
+                    
+                </form>
+            </Container>
+        )
+    }
+}
+
+const Portal = (props) => {
+	const node = document.createElement('div');
+	document.body.appendChild(node);
+
+	return ReactDOM.createPortal(props.children, node);
+}
+
+const Msg = () => {
+	return (
+		<div 
+			style={{'width': '500px', 
+				'height': '150px', 
+				'backgroundColor': 'red', 
+				'position': 'fixed', 
+				'right': '0', 
+				'bottom': '0'}}>
+			Hello
+		</div>
+	)
+}
+
 function App() {
 	return (
 		<>
-			<NewForm/>
+			<RefForm/>
 			<Wrapper>
 				<Counter render={counter => (
 					<Message counter={counter}/>
@@ -221,6 +281,7 @@ function App() {
 				<WhoAmI name='John' surname="Smith" link="fb.com"/>
 				<WhoAmI name='Alex' surname="Shepard" link="vk.com"/>
 			</Wrapper>
+			<NewForm/>
 		</>
 	);
 }
